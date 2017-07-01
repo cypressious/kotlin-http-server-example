@@ -71,6 +71,16 @@ abstract class AbstractServer : NanoHTTPD(8080) {
     }
 }
 
+class Person(
+        val name: String,
+        val age: Int
+)
+
+class PersonResult(
+        val person: Person,
+        val accepted: Boolean
+)
+
 class Server : AbstractServer() {
 
     //init
@@ -78,6 +88,11 @@ class Server : AbstractServer() {
         register(Method.GET, "/hello") {
             this.responseHeaders.put("X-Foo", "Bar")
             "hello world"
+        }
+
+        register<Person>(Method.POST, "/post") { person ->
+            //named parameter
+            PersonResult(person, accepted = true)
         }
     }
 }
